@@ -1,11 +1,10 @@
 package com.example.farmacia.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_categoria")
@@ -17,6 +16,18 @@ public class Categoria {
 
     @NotNull(message = "O Atributo Descrição é obrigatório")
     private String categoria;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("categoria")
+    private List<Produto> produto;
+
+    public List<Produto> getProduto() {
+        return produto;
+    }
+
+    public void setProduto(List<Produto> produto) {
+        this.produto = produto;
+    }
 
     public Long getId() {
         return this.id;
